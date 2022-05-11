@@ -1,0 +1,22 @@
+{
+  "name": "authentication",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "joi": "^17.6.0",
+    "mongoose": "^6.3.3",
+    "winston": "^3.7.2"
+  },
+  "main": "app.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
