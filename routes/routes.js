@@ -1,10 +1,15 @@
+const { VALIDATOR_NAMES } = require('../common/index');
+const authMiddleware = require('../middlewares/authentication');
+
 const userControllers = {
   signup: {
     controller: require('../controllers/users/signup'),
-    // policy:
+    handler: authMiddleware(VALIDATOR_NAMES.SIGNUP),
   },
-  login: {
-    controller: require('../controllers/users/signup'),
+  signin: {
+    controller: require('../controllers/users/signin'),
+    handler: authMiddleware(VALIDATOR_NAMES.SIGNIN),
   },
 };
+
 module.exports = userControllers;
