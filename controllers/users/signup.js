@@ -6,6 +6,7 @@ module.exports = async (req, res) => {
     return res.status(200).json({ message: 'Success' });
   } catch (error) {
     logger.error(`${fileName}: Internal Server Error:${error.message}`);
+    
     return res.status(500).json({ message: 'Internal Server Error' });
   }
 };
