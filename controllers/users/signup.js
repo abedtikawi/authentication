@@ -6,6 +6,22 @@ const {
   RESPONSE_MESSAGE,
   RESPONSE_CODES,
 } = require('../../common/responses.index');
+const { EMAIL_TYPES } = require('../../common/index');
+const emailSender = require('../../helpers/email/index');
+/**
+ * @api {post} /users/signup User Signup Endpoint
+ * @apiName Signup
+ * @apiGroup Users
+ *
+ * @apiBody {String} email User's unique email.
+ * @apiBody {String} password User's password.
+ * @apiBody {String} name User's first name.
+ * @apiBody {String} surname User's surname.
+ *
+ *
+ * @apiSuccess {String} message Created.
+ * @apiSuccess {Object} data MongoDB User Object
+ */
 module.exports = async (req, res) => {
   const { CREATED, DB_ERROR, INTERNAL_SERVER_ERROR } = RESPONSE_CODES;
   try {
@@ -35,7 +51,9 @@ module.exports = async (req, res) => {
     const encryptedPassword = await bcrypt.hash(req.body.password, salt);
 
     // create new user with the encrypted password
-    logger.info(`${fileName}: Attempting to create new user with email:${req.body.email}`);
+    logger.info(
+      `${fileName}: Attempting to create new user with email:${req.body.email}`
+    );
     const createUser = await UsersSchema.create({
       ...req.body,
       password: encryptedPassword,
@@ -44,6 +62,10 @@ module.exports = async (req, res) => {
     logger.info(
       `Successfully created User:${req.body.email} && returning Result`
     );
+    // dispatch email
+
+    await emailSender(EMAIL_TYPES.SIGNUP, req.body.email);
+
     return res
       .status(CREATED.code)
       .json(RESPONSE_MESSAGE(CREATED.code, createUser));

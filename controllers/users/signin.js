@@ -2,10 +2,13 @@ const logger = require('../../config/logger');
 const fileName = __filename.split(/(\\|\/)/g).pop();
 const UsersSchema = require('../../models/users');
 const bcrypt = require('bcrypt');
+const emailSender = require('../../helpers/email/index');
+const { EMAIL_TYPES } = require('../../common/index');
 const {
   RESPONSE_MESSAGE,
   RESPONSE_CODES,
 } = require('../../common/responses.index');
+
 module.exports = async (req, res) => {
   const { OK, DB_ERROR, INTERNAL_SERVER_ERROR } = RESPONSE_CODES;
 
@@ -15,7 +18,6 @@ module.exports = async (req, res) => {
       `${fileName}: Checking if email already exists:${req.body.email}`
     );
     const _user = await UsersSchema.findOne({ email: req.body.email });
-    // handle response of email rejection if email does not exist
     if (!_user) {
       logger.warn(`${fileName}: Email: ${req.body.email} does not exist`);
       return res
@@ -27,6 +29,7 @@ module.exports = async (req, res) => {
           )
         );
     }
+
     // if email is locked , handle response
     if (_user.isLocked) {
       logger.warn(
@@ -41,9 +44,9 @@ module.exports = async (req, res) => {
           )
         );
     }
-    logger.info(`${fileName}: Comparing Passwords`);
 
     // compare hashed password with passed password
+    logger.info(`${fileName}: Comparing Passwords`);
     const comparePasswords = await bcrypt.compare(
       req.body.password,
       _user.password
@@ -62,9 +65,11 @@ module.exports = async (req, res) => {
         logger.warn(`${fileName}: Locking email`);
         await UsersSchema.findByIdAndUpdate(_user._id, {
           $set: { isLocked: true },
+          $inc: { loginAttempts: 1 },
         });
 
         // dispatch email
+        await emailSender(EMAIL_TYPES.LOCKED, req.body.email);
 
         // handle response
         return res
@@ -76,8 +81,9 @@ module.exports = async (req, res) => {
             )
           );
       }
+
       logger.info(
-        `${fileName}: Incrementing number of login attempts to :${currentAttempt} /5`
+        `${fileName}: Incrementing number of login attempts to : ${currentAttempt}/5`
       );
       await UsersSchema.findByIdAndUpdate(_user._id, {
         $inc: { loginAttempts: 1 },
@@ -89,12 +95,13 @@ module.exports = async (req, res) => {
         .json(
           RESPONSE_MESSAGE(
             DB_ERROR.code,
-            `Wrong Credentials,Allowed trials:${currentAttempt} /5`
+            `Wrong Credentials,Allowed trials: ${currentAttempt}/5`
           )
         );
     }
-    logger.info(`${fileName}: Successfull authentication`);
+
     // if passwords are the same , reset the login attempts back to 0
+    logger.info(`${fileName}: Successfull authentication`);
     if (_user.loginAttempts > 0) {
       logger.info(`${fileName}: Reseting login attempts to 0`);
       await UsersSchema.findByIdAndUpdate(_user._id, {
@@ -103,6 +110,9 @@ module.exports = async (req, res) => {
     }
 
     // dispatch email
+
+    await emailSender(EMAIL_TYPES.SIGNIN, req.body.email);
+
     // handle response
     return res
       .status(OK.code)
