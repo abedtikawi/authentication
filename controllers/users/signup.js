@@ -1,3 +1,21 @@
+/**
+ * @api {post} /users/signup User Signup Endpoint
+ * @apiName Signup
+ * @apiGroup Users
+ *
+ * @apiBody {String} email User's unique email.
+ * @apiBody {String} password User's password.
+ * @apiBody {String} name User's first name.
+ * @apiBody {String} surname User's surname.
+ * @apiDescription 
+ * All emails are unique.<br>
+ * If a successfull signup is triggered, an email is dispatched to the user's email.<br>
+ *
+ *
+ * @apiSuccess {String} message Created.
+ * @apiSuccess {Object} data MongoDB User Object
+ */
+
 const logger = require('../../config/logger');
 const fileName = __filename.split(/(\\|\/)/g).pop();
 const UsersSchema = require('../../models/users');
@@ -8,20 +26,7 @@ const {
 } = require('../../common/responses.index');
 const { EMAIL_TYPES } = require('../../common/index');
 const emailSender = require('../../helpers/email/index');
-/**
- * @api {post} /users/signup User Signup Endpoint
- * @apiName Signup
- * @apiGroup Users
- *
- * @apiBody {String} email User's unique email.
- * @apiBody {String} password User's password.
- * @apiBody {String} name User's first name.
- * @apiBody {String} surname User's surname.
- *
- *
- * @apiSuccess {String} message Created.
- * @apiSuccess {Object} data MongoDB User Object
- */
+
 module.exports = async (req, res) => {
   const { CREATED, DB_ERROR, INTERNAL_SERVER_ERROR } = RESPONSE_CODES;
   try {
