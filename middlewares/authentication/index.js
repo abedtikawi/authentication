@@ -6,6 +6,7 @@ const {
   RESPONSE_CODES,
   RESPONSE_MESSAGE,
 } = require('../../common/responses.index');
+
 module.exports = (VALIDATOR_NAME) => {
   if (!Validators.hasOwnProperty(VALIDATOR_NAME)) {
     // this will happen only if the property of VALIDATOR_NAME is passed as a literal and not from the commons index folder
@@ -19,13 +20,12 @@ module.exports = (VALIDATOR_NAME) => {
         req.body
       );
 
-      logger.info(`${fileName}: Validated Body schema for :${VALIDATOR_NAME}`);
       // save the body request that has been processed in the req.body
-
+      logger.info(`${fileName}: Validated Body schema for :${VALIDATOR_NAME}`);
       req.body = validation;
       next();
     } catch (error) {
-      const { VALIDATION_ERROR } = RESPONSE_CODES;
+      const { VALIDATION_ERROR, INTERNAL_SERVER_ERROR } = RESPONSE_CODES;
 
       // handle joi validation error
       if (error.isJoi) {
@@ -37,7 +37,9 @@ module.exports = (VALIDATOR_NAME) => {
 
       //handle internal server error
       logger.error(`${fileName}: Internal Server Error:${error.message}`);
-      return;
+      return res
+        .status(INTERNAL_SERVER_ERROR.code)
+        .json(RESPONSE_MESSAGE(INTERNAL_SERVER_ERROR.code));
     }
   };
 };
