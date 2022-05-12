@@ -1,5 +1,5 @@
-export MONGO_URL=""
-export PORT=""
+export MONGO_URL=''
+export PORT=''
 export SMTP_HOST=''
 export SMTP_PORT=''
 export SMTP_SECURE=''
