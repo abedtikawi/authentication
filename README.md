@@ -76,6 +76,23 @@
 
 ---
 
+## For Further Documentation, Please refer to the apiDocs found in index.html
+
+---
+
+    ### A Top-level directory layout for the location of docs using apiDocs
+    ...
+    ...
+    ├── docs                   # Documentation folder (apiDocs)
+    |      |
+    |      └── index.html      # More descriptive documentation regarding routes <<<
+    |
+    ├── controllers
+    ├── middlewares
+    ├── node_modules
+    ...
+
+---
 
 
 
@@ -93,4 +110,9 @@
 > | POST       | /users/signup | email & password & name & surname                    | message & data|
 ---
 
+
+
+## To test the Endpoints, please refer to the postman link:
+
+>[Authentication](https://www.getpostman.com/collections/9a30036430c593b52aca)
 
