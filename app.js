@@ -1,9 +1,13 @@
-let express = require('express');
-let indexRouter = require('./routes');
+// libraries
+const express = require('express');
+// files
 const connectDB = require('./db/DBConnection');
+const indexRouter = require('./routes');
 
-let app = express();
-connectDB()
+const app = express();
+
+connectDB();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
