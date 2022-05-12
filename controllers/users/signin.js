@@ -8,7 +8,7 @@
  * @apiDescription 
  * If the user tries to sign in with the wrong credentials more than 5 times, their account will be locked.<br>
  * If a successful/locked attempt is triggered, an email is dispatched to the user's email.<br>
- * If a user has n<5 ( where n is number of login attempts) and successfully logs in, counter gets reset back to 0.<br>
+ * If a user has LOGIN_ATTEMPTS < 5 and successfully logs in, counter gets reset back to 0.<br>
  *
  * @apiSuccess {String} message Created.
  * @apiSuccess {String} data Successfull login for email:[email].
