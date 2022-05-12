@@ -5,11 +5,14 @@
 
 	 Users should be able to sign up with unique emails only.
 		- Upon successful signup, dispatch email of registration.
+		
 	 Users should be able to login with the registered email & password.
+	 
 	 If a user has attempted 5 login attempts , on the 5th attempt:
-		 - Lock user account
-		 - Dispatch account locked
-	If a user has attempted 0<LOGIN_ATTEMPTS<5 , and successfully logs in:
+		- Lock user account
+		- Dispatch account locked
+		
+	 If a user has attempted 0<LOGIN_ATTEMPTS<5 , and successfully logs in:
 		- Reset login attempts back to 0.
 		- Dispatch email of successful login.
 
@@ -21,7 +24,7 @@
 # Install Dependencies
 ## Modules
 ```bash
-npm install
+> npm install
 ```
 ## Start server in development mode
 ```bash
@@ -38,31 +41,35 @@ npm install
 	### A Top-level directory Folder layout
 	..
 	..
-	├──bin
-	|	├──	www							# Server Configuration
+	├── bin
+	|   ├──	www							# Server Configuration
+	|
 	├── controllers						
-	|			|
-	|			├── users				# Endpoints
-	|					|
-	|					├──sigin.js		
-	|					├──signup.js
+	|	|
+	|	|
+	|	├── users						# Endpoints
+	|		├──sigin.js		
+	|		├──signup.js
 	|
 	|
 	├── docs							# Documentation( apiDocs )
 	├── config							# Logger Configuration
 	├── common							# Common types between files
-	|		...
-	|		|						
-	|		├── responses.index.js		# Centralized file for status 
-	|									# codes & messages
+	|	...
+	|	 |						
+	|	 ├── responses.index.js					# Centralized file for status codes & messages
 	|
-	├──	helpers							# Email wrapper & helper functions
-	├── middlewares						# Joi Central Validation
+	|
+	├── helpers							# Email wrapper & helper functions
+	|
+	├── middlewares							# Joi Central Validation
+	|
 	├── models							# MongoDB Model
+	|
 	├── routes
-	|		|		
-	|		├── index.js				# Router file with routes and middlewares
-	|		├── routes.js				# Controllers with their handlers
+	|	..		
+	|	├── index.js						# Router file with routes and middlewares
+	|	├── routes.js						# Controllers with their handlers
 	|
 	├── schemas							# Joi schemas used for validation
 	├── app.js							# Server Entry File
