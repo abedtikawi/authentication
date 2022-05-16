@@ -1,6 +1,7 @@
 const VALIDATOR_NAMES = {
   SIGNUP: 'signup',
   SIGNIN: 'signin',
+  CREATEROOM: 'createRoom',
 };
 const EMAIL_TYPES = {
   SIGNUP: 'signup',
@@ -10,5 +11,5 @@ const EMAIL_TYPES = {
 
 module.exports = {
   VALIDATOR_NAMES,
-  EMAIL_TYPES
+  EMAIL_TYPES,
 };

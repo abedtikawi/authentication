@@ -3,7 +3,7 @@ const logger = require('../config/logger');
 const db = process.env.MONGO_URL;
 const fileName = __filename.split(/(\\|\/)/g).pop();
 
-// connect to mongoDB 
+// connect to mongoDB
 const connectDB = async () => {
   try {
     await mongoose.connect(db, {
@@ -11,7 +11,7 @@ const connectDB = async () => {
       useUnifiedTopology: true,
     });
 
-    logger.info(`${fileName}: Connected to Database`);
+    logger.info(`${fileName}: Connected to Database Successfully`);
   } catch (err) {
     if (err.name === 'MongoNetworkError' || err.code === 'ECONNREFUSED') {
       return logger.error(`${fileName}: No internet on server`);
